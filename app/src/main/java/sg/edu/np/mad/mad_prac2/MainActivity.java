@@ -11,38 +11,43 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG="Main Activity";
+    Button myFollow;
+    User user=new User();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent receivingEnd=getIntent();
-        int randomit=receivingEnd.getIntExtra("Random",0);
-        User myUser=new User();
-        myUser.setName("Javier");
-        myUser.setDescription("MAD exe 2");
-        myUser.setFollowed(true);
         setContentView(R.layout.activity_main);
-        Button myFollow=findViewById(R.id.follow);
-        Button myMessage=findViewById(R.id.message);
-        TextView myName=findViewById((R.id.name));
-        TextView myDesc=findViewById((R.id.description));
-        if(myUser.isFollowed()==true){
-            myFollow.setText("Unfollow");
+        myFollow=findViewById(R.id.followed);
+        myFollow.setText("Followed");
+        TextView myName=findViewById(R.id.name);
+        TextView myDesc=findViewById(R.id.description);
+        Intent receivingEnd=getIntent();
+        String Name=receivingEnd.getStringExtra("Name");
+        String Desc=receivingEnd.getStringExtra("Desc");
+        String pic=receivingEnd.getStringExtra("Pic");
+        Boolean followed=receivingEnd.getBooleanExtra("Followed",false);
+        User user=receivingEnd.getParcelableExtra("User");
+
+        if(user.isFollowed()==true){
+            myFollow.setText("UNFOLLOW");
         }
-        else{myFollow.setText("Follow");}
-        myName.setText(myUser.getName()+randomit);
-        myDesc.setText(myUser.getDescription());
+        else{myFollow.setText("FOLLOW");}
+        myName.setText(Name);
+        myDesc.setText(Desc);
         myFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(myUser.isFollowed()==true){
-                    myUser.setFollowed(false);
-                    myFollow.setText("Follow");
+                if(user.isFollowed()==true){
+                    user.setFollowed(false);
+                    myFollow.setText("FOLLOW");
                     Toast.makeText(getApplicationContext(), "Unfollowed", Toast.LENGTH_SHORT).show();
 
                 }
-                else{myUser.setFollowed(true);
-                    myFollow.setText("Unfollow");
+                else{user.setFollowed(true);
+                    myFollow.setText("UNFOLLOW");
+
                     Toast.makeText(getApplicationContext(), "Followed", Toast.LENGTH_SHORT).show();}
 
 
